@@ -34,3 +34,10 @@ The commit message should follow the format:
 - `<scope>`: The scope of the commit, typically the part of the project affected (e.g., `api`, `web`)
 - `<short description>`: A brief summary of the changes made
 - `<optional long description>`: A more detailed explanation of the changes, if necessary
+
+## Contribution guidelines
+
+- **Never commit directly to `main`.** Direct commits to `main` are forbidden.
+- Start every change from `dev`: create a new branch off `dev` (or fork the repo) and do your work there.
+- When the work is done, open a pull request **into `dev`** (not `main`).
+- If the PR has merge conflicts, resolve them **locally**: pull the latest `dev` into your branch, fix the conflicts, then push the updated branch.
