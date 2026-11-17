@@ -2,9 +2,9 @@
   "name": "atlas-hackaton",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "typecheck": "tsc -b"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +17,9 @@
     }
   },
   "packageManager": "pnpm@12.21.0",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
 }
