@@ -1,4 +1,4 @@
-import { LogContext } from "./LogContext.js";
+import type { LogContext } from "@core/logging/LogContext.js";
 
 export interface ILogger {
   /**

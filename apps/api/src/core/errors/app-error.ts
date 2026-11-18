@@ -1,5 +1,5 @@
 import { MachineCode } from "@core/errors/machine-code.js";
-import { HttpStatusCode } from "@riskatlas/shared";
+import { HttpStatusCode } from "@atlas/shared";
 
 export class AppError extends Error {
   public readonly statusCode: HttpStatusCode;

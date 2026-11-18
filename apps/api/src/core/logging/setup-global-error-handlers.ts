@@ -1,5 +1,5 @@
 import { container } from "tsyringe";
-import { ILogger } from "@core/logging/ILogger.js";
+import type { ILogger } from "@core/logging/ILogger.js";
 import { TOKENS } from "@core/di/tokens.js";
 
 export function setupGlobalErrorHandlers() {

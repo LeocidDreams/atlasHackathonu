@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "@riskatlas/shared";
+import { HttpStatusCode } from "@atlas/shared";
 
 // A numeric enum also holds reverse mappings (200 -> "OK"); keep only the names.
 const httpCodes = Object.fromEntries(
@@ -8,8 +8,6 @@ const httpCodes = Object.fromEntries(
 export const MachineCode = {
   ...httpCodes,
   // add app-specific codes here, e.g. EMAIL_ALREADY_EXISTS: "EMAIL_ALREADY_EXISTS",
-
-  DEV_REFRESH_TOKEN_MISSING: "DEV_REFRESH_TOKEN_MISSING",
 } as const;
 
 export type MachineCode = (typeof MachineCode)[keyof typeof MachineCode];
