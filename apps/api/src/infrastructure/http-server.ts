@@ -130,8 +130,8 @@ export async function startHttp(port: number) {
       port,
       host,
       bootTimeMs,
-      dbType: "mongo",
-      dbAddress: process.env.MONGODB_URI || "unknown",
+      dbType: "supabase",
+      dbAddress: process.env.SUPABASE_URI || "unknown",
     });
 
     // Log technique via ILogger
