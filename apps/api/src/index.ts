@@ -7,7 +7,7 @@ import { container } from "tsyringe";
 async function main() {
   try {
     await autoRegister({
-      container, // optionnel, par défaut c’est le rootContainer
+      container,
     });
     const port: number = parseInt(process.env.PORT || "3000");
 
