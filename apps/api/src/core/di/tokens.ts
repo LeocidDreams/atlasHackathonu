@@ -4,4 +4,5 @@ export const TOKENS = {
   ChunkDocument: Symbol.for("ChunkDocument"),
   EmbeddingGenerator: Symbol.for("EmbeddingGenerator"),
   IngestDocumentUseCase: Symbol.for("IngestDocumentUseCase"),
+  ExamGenerator: Symbol.for("ExamGenerator"),
 };
