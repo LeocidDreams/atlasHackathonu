@@ -190,6 +190,9 @@ importers:
       '@atlas/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@atlas/validators':
+        specifier: workspace:*
+        version: link:../../packages/validators
       '@google/genai':
         specifier: ^3.4.0
         version: 3.4.0(supports-color@5.5.0)

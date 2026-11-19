@@ -46,7 +46,8 @@
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",
     "tsyringe": "^4.10.0",
-    "zod": "^4.6.7"
+    "zod": "^4.6.7",
+    "@atlas/validators": "workspace:*"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
