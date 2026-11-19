@@ -33,5 +33,6 @@
       "@provider/*": ["./src/provider/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [{ "path": "../../packages/domain" }]
 }
