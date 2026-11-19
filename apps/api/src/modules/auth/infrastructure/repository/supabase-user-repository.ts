@@ -14,7 +14,7 @@ export class SupabaseUserRepository implements IUserRepository {
       .single();
 
     if (error) {
-      throw new AppError(error.message);
+      throw AppError.internal(error.message);
     }
 
     return data as User;
@@ -28,7 +28,7 @@ export class SupabaseUserRepository implements IUserRepository {
       .single();
 
     if (error) {
-      throw new AppError(error.message);
+      throw AppError.internal(error.message);
     }
 
     return data as User;
@@ -37,7 +37,7 @@ export class SupabaseUserRepository implements IUserRepository {
   public async ensureUserExistById(id: string): Promise<User> {
     const user = await this.findUserById(id);
     if (!user) {
-      throw new AppError(`User with ID ${id} does not exist`);
+      throw AppError.notFound(`User with ID ${id} does not exist`);
     }
     return user;
   }
@@ -45,7 +45,7 @@ export class SupabaseUserRepository implements IUserRepository {
   public async ensureUserExistByEmail(email: string): Promise<User> {
     const user = await this.findUserByEmail(email);
     if (!user) {
-      throw new AppError(`User with email ${email} does not exist`);
+      throw AppError.notFound(`User with email ${email} does not exist`);
     }
     return user;
   }
@@ -53,14 +53,14 @@ export class SupabaseUserRepository implements IUserRepository {
   public async ensureUserNotExistByEmail(email: string): Promise<void> {
     const user = await this.findUserByEmail(email);
     if (user) {
-      throw new AppError(`User with email ${email} already exists`);
+      throw AppError.conflict(`User with email ${email} already exists`);
     }
   }
 
   public async ensureUserNotExistById(id: string): Promise<void> {
     const user = await this.findUserById(id);
     if (user) {
-      throw new AppError(`User with ID ${id} already exists`);
+      throw AppError.conflict(`User with ID ${id} already exists`);
     }
   }
 }
