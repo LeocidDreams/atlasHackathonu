@@ -14,8 +14,8 @@ export class IngestDocumentUseCase {
   public async execute(file: string | File): Promise<EmbeddedChunk[]> {
     const chunks = await this.chunker.generateChunksFromFile(file);
     const source = chunks[0]?.metadata.source;
-    const embeddings = await this.embedder.generateEmbeddingsFromTexts(
-      chunks.map((chunk) => chunk.content),
+    const embeddings = await this.embedder.generateEmbeddingsFromChunks(
+      chunks,
       typeof source === "string" ? source : undefined,
     );
 
