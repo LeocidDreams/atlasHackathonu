@@ -9,4 +9,5 @@ export const TOKENS = {
 
   // auth
   UserRepository: Symbol.for("UserRepository"),
+  SignUp: Symbol.for("SignUp"),
 };

@@ -46,8 +46,46 @@ const authRouter: Router = Router();
  *                   type: integer
  *                   example: 201
  *                 data:
- *                   type: ["object", "string", "null"]
- *                   example: created
+ *                   type: object
+ *                   required: [id, email, createdAt, updatedAt]
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       format: uuid
+ *                       example: 3f1c2b9e-8a4d-4e6f-9b2a-1c5d7e8f9a0b
+ *                     email:
+ *                       type: string
+ *                       format: email
+ *                       example: user@example.com
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *                       example: 2026-11-19T10:00:00.000Z
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
+ *                       example: 2026-11-19T10:00:00.000Z
+ *                     phone:
+ *                       type: string
+ *                       example: "+905551112233"
+ *                 issues:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   example: []
+ *       409:
+ *         description: A user with the given email already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User with email user@example.com already exists
+ *                 httpStatusCode:
+ *                   type: integer
+ *                   example: 409
  *                 issues:
  *                   type: array
  *                   items:

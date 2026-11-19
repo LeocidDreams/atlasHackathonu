@@ -53,6 +53,7 @@ export async function createApp(): Promise<Express> {
       // production routes
       auth.requestMatchers("/api/rag/*").permitAll();
       auth.requestMatchers("/api/upload/*").permitAll();
+      auth.requestMatchers("/api/auth/*").permitAll();
     })
     .build();
 
@@ -89,6 +90,10 @@ export async function createApp(): Promise<Express> {
   const { uploadRouter } =
     await import("@modules/upload/infrastructure/http/upload.route.js");
   app.use("/api/upload", uploadRouter);
+
+  const { authRouter } =
+    await import("@modules/auth/infrastructure/http/auth.route.js");
+  app.use("/api/auth", authRouter);
 
   app.use(errorMiddleware);
 

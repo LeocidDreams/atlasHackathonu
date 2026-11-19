@@ -1,7 +1,9 @@
 import { ApiResponse, HttpStatusCode } from "@atlas/shared";
 import type { Request, Response } from "express";
-import { supabase } from "@core/supabase/supabase.js";
 import type { SignUpDto } from "@atlas/validators";
+import { container } from "tsyringe";
+import { TOKENS } from "@core/di/tokens.js";
+import type { ISignUp } from "@modules/auth/domain/Isign-up.js";
 
 export class AuthController {
   constructor() {}
@@ -9,10 +11,8 @@ export class AuthController {
   public static async signUp(req: Request, res: Response) {
     const data: SignUpDto = req.body;
 
-    supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-    });
+    const signUpService = container.resolve<ISignUp>(TOKENS.SignUp);
+    await signUpService.execute(data);
 
     res.status(HttpStatusCode.CREATED).json(ApiResponse.created("created"));
   }
