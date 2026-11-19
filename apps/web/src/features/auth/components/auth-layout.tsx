@@ -1,3 +1,4 @@
+import { GlobeIcon } from "lucide-react";
 import { Link } from "react-router";
 
 type AuthLayoutProps = {
@@ -20,7 +21,7 @@ export function AuthLayout({
           to="/home"
           className="flex w-fit items-center gap-2 rounded-md font-heading text-base font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          <AtlasMark className="size-6" />
+          <GlobeIcon className="size-6" strokeWidth={1.5} aria-hidden="true" />
           Atlas
         </Link>
 
@@ -52,31 +53,11 @@ export function AuthLayout({
 function AuthAside() {
   return (
     <aside className="relative hidden overflow-hidden bg-primary text-primary-foreground lg:flex lg:flex-col lg:justify-end">
-      <svg
+      <GlobeIcon
         aria-hidden="true"
-        viewBox="0 0 400 400"
+        strokeWidth={0.4}
         className="absolute -top-24 -right-32 size-[46rem] opacity-25"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="0.6"
-      >
-        <circle cx="200" cy="200" r="180" />
-        {[150, 110, 65, 20].map((rx) => (
-          <ellipse key={rx} cx="200" cy="200" rx={rx} ry="180" />
-        ))}
-        {[-135, -90, -45, 0, 45, 90, 135].map((y) => {
-          const half = Math.sqrt(180 ** 2 - y ** 2);
-          return (
-            <line
-              key={y}
-              x1={200 - half}
-              x2={200 + half}
-              y1={200 + y}
-              y2={200 + y}
-            />
-          );
-        })}
-      </svg>
+      />
 
       <figure className="relative flex max-w-md flex-col gap-4 p-12">
         <blockquote className="font-heading text-2xl leading-snug font-medium tracking-tight text-balance">
@@ -90,19 +71,3 @@ function AuthAside() {
   );
 }
 
-function AtlasMark({ className }: { className?: string }) {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      className={className}
-    >
-      <circle cx="12" cy="12" r="9.25" />
-      <ellipse cx="12" cy="12" rx="4" ry="9.25" />
-      <path d="M2.75 12h18.5" />
-    </svg>
-  );
-}
