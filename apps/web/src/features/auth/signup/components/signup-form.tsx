@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { PasswordInput } from "@/features/auth/components/password-input";
+import { useNavigate } from "react-router";
 
 export type SignUpValues = {
   email: string;
@@ -28,6 +29,7 @@ export function SignUpForm() {
   const [fieldErrors, setFieldErrors] = useState<SignUpErrors>({});
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const mismatch = submitted && confirm.length > 0 && confirm !== password;
 

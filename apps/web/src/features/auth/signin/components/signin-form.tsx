@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -10,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { PasswordInput } from "@/features/auth/components/password-input";
 import { supabase } from "@lib/supabase";
+import { toast } from "sonner";
 
 export type SignInValues = {
   email: string;
@@ -19,6 +21,7 @@ export type SignInValues = {
 export function SignInForm() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -40,10 +43,14 @@ export function SignInForm() {
         setError(error.message);
         return;
       }
+
+      toast.success("Signed in successfully");
+      navigate("/home");
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Sign in failed. Try again.",
       );
+      toast.error("Sign in failed. Try again.");
     } finally {
       setPending(false);
     }
