@@ -1,6 +1,7 @@
 import * as z from "zod";
 
-const STRONG_PASSWORD = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8}$/;
+const STRONG_PASSWORD =
+  /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
 
 export function createSignUpSchema() {
   const schema = z.object({
