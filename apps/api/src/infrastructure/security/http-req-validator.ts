@@ -14,8 +14,14 @@ export const createHttpValidator = ({
 }: HttpValidatorOptions): ((req: Request, res: Response) => z.ZodType) => {
   return () =>
     z.object({
-      body: createBodySchema ? createBodySchema() : z.object({}),
-      query: createQuerySchema ? createQuerySchema() : z.object({}),
-      headers: createHeadersSchema ? createHeadersSchema() : z.object({}),
+      body: createBodySchema
+        ? createBodySchema().optional()
+        : z.object({}).optional(),
+      query: createQuerySchema
+        ? createQuerySchema().optional()
+        : z.object({}).optional(),
+      headers: createHeadersSchema
+        ? createHeadersSchema().optional()
+        : z.object({}).optional(),
     });
 };

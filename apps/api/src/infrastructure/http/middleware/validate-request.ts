@@ -9,9 +9,9 @@ export const validateRequest = (
     try {
       const schema = createSchema(req, res);
       await schema.parseAsync({
-        body: req.body,
-        query: req.query,
-        params: req.params,
+        ...{ body: req.body ?? {} },
+        ...{ query: req.query ?? {} },
+        ...{ headers: req.headers ?? {} },
       });
       return next();
     } catch (error) {
