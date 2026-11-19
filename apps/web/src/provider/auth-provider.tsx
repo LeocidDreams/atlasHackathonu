@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import type { User } from "@atlas/domain";
 import { supabase } from "@lib/supabase";
 
@@ -27,63 +27,69 @@ export function AuthProvider({ children, ...props }: AuthProviderProps) {
     isLoggedIn,
   };
 
-  supabase.auth.onAuthStateChange((event, session) => {
-    console.log(event, session);
-    if (event === "INITIAL_SESSION") {
-      if (session?.user) {
-        setUser({
-          createdAt: session.user.created_at,
-          email: session.user.email ?? "",
-          id: session.user.id,
-          updatedAt: session.user.updated_at ?? "",
-        });
-        setIsLoggedIn(true);
+  useEffect(() => {
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(event, session);
+      if (event === "INITIAL_SESSION") {
+        if (session?.user) {
+          setUser({
+            createdAt: session.user.created_at,
+            email: session.user.email ?? "",
+            id: session.user.id,
+            updatedAt: session.user.updated_at ?? "",
+          });
+          setIsLoggedIn(true);
+        }
+      } else if (event === "SIGNED_IN") {
+        if (session?.user) {
+          setUser({
+            createdAt: session.user.created_at,
+            email: session.user.email ?? "",
+            id: session.user.id,
+            updatedAt: session.user.updated_at ?? "",
+          });
+          setIsLoggedIn(true);
+        }
+      } else if (event === "SIGNED_OUT") {
+        setUser(null);
+        setIsLoggedIn(false);
+      } else if (event === "PASSWORD_RECOVERY") {
+        if (session?.user) {
+          setUser({
+            createdAt: session.user.created_at,
+            email: session.user.email ?? "",
+            id: session.user.id,
+            updatedAt: session.user.updated_at ?? "",
+          });
+          setIsLoggedIn(true);
+        }
+      } else if (event === "TOKEN_REFRESHED") {
+        if (session?.user) {
+          setUser({
+            createdAt: session.user.created_at,
+            email: session.user.email ?? "",
+            id: session.user.id,
+            updatedAt: session.user.updated_at ?? "",
+          });
+          setIsLoggedIn(true);
+        }
+      } else if (event === "USER_UPDATED") {
+        if (session?.user) {
+          setUser({
+            createdAt: session.user.created_at,
+            email: session.user.email ?? "",
+            id: session.user.id,
+            updatedAt: session.user.updated_at ?? "",
+          });
+          setIsLoggedIn(true);
+        }
       }
-    } else if (event === "SIGNED_IN") {
-      if (session?.user) {
-        setUser({
-          createdAt: session.user.created_at,
-          email: session.user.email ?? "",
-          id: session.user.id,
-          updatedAt: session.user.updated_at ?? "",
-        });
-        setIsLoggedIn(true);
-      }
-    } else if (event === "SIGNED_OUT") {
-      setUser(null);
-      setIsLoggedIn(false);
-    } else if (event === "PASSWORD_RECOVERY") {
-      if (session?.user) {
-        setUser({
-          createdAt: session.user.created_at,
-          email: session.user.email ?? "",
-          id: session.user.id,
-          updatedAt: session.user.updated_at ?? "",
-        });
-        setIsLoggedIn(true);
-      }
-    } else if (event === "TOKEN_REFRESHED") {
-      if (session?.user) {
-        setUser({
-          createdAt: session.user.created_at,
-          email: session.user.email ?? "",
-          id: session.user.id,
-          updatedAt: session.user.updated_at ?? "",
-        });
-        setIsLoggedIn(true);
-      }
-    } else if (event === "USER_UPDATED") {
-      if (session?.user) {
-        setUser({
-          createdAt: session.user.created_at,
-          email: session.user.email ?? "",
-          id: session.user.id,
-          updatedAt: session.user.updated_at ?? "",
-        });
-        setIsLoggedIn(true);
-      }
-    }
-  });
+    });
+    // Cleanup subscription on unmount
+    return () => {
+      data?.subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <AuthProviderContext.Provider {...props} value={value}>
