@@ -1,2 +1,1 @@
-// Domain types shared by the apps (entities, value objects).
-export {};
+export * from "./auth/user.js";
