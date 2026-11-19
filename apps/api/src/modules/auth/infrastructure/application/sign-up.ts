@@ -9,12 +9,9 @@ import type { ISignUp } from "@modules/auth/domain/Isign-up.js";
 
 @injectable()
 export class SignUp implements ISignUp {
-  constructor(
-    @inject(TOKENS.UserRepository) private userRepository: IUserRepository,
-  ) {}
+  constructor() {}
 
   public async execute(dto: SignUpDto): Promise<User> {
-    await this.userRepository.ensureUserNotExistByEmail(dto.email);
     const response = await supabase.auth.signUp({
       email: dto.email,
       password: dto.password,

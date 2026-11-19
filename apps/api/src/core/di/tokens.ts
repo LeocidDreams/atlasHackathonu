@@ -8,6 +8,5 @@ export const TOKENS = {
   ExamGenerator: Symbol.for("ExamGenerator"),
 
   // auth
-  UserRepository: Symbol.for("UserRepository"),
   SignUp: Symbol.for("SignUp"),
 };
