@@ -1,8 +1,10 @@
-import { Link } from "react-router";
 import { AuthLayout } from "@/features/auth/components/auth-layout";
+import { useNavigate } from "react-router";
 import { SignInForm } from "@/features/auth/signin/components/signin-form";
 
 export default function Page() {
+  const navigate = useNavigate();
+
   return (
     <AuthLayout
       title="Sign in to Atlas"
@@ -10,12 +12,13 @@ export default function Page() {
       footer={
         <>
           New to Atlas?{" "}
-          <Link
-            to="/auth/signup"
-            className="font-medium text-foreground underline underline-offset-4"
+          <button
+            type="button"
+            onClick={() => navigate("/auth/signup")}
+            className="cursor-pointer font-medium text-foreground underline underline-offset-4"
           >
             Create an account
-          </Link>
+          </button>
         </>
       }
     >
