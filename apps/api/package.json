@@ -21,7 +21,9 @@
     "exec": "pnpm run build && node dist/index.js"
   },
   "dependencies": {
+    "@atlas/domain": "workspace:*",
     "@atlas/shared": "workspace:*",
+    "@atlas/validators": "workspace:*",
     "@google/genai": "^3.4.0",
     "@langchain/community": "^1.1.29",
     "@langchain/core": "^1.4.1",
@@ -46,8 +48,7 @@
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",
     "tsyringe": "^4.10.0",
-    "zod": "^4.6.7",
-    "@atlas/validators": "workspace:*"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",

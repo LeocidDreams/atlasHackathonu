@@ -3,6 +3,7 @@
   "files": [],
   "references": [
     { "path": "./packages/shared" },
+    { "path": "./packages/domain" },
     { "path": "./packages/validators" },
     { "path": "./apps/api" }
   ]

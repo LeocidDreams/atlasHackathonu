@@ -187,6 +187,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@atlas/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
       '@atlas/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -299,6 +302,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@atlas/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
       '@atlas/validators':
         specifier: workspace:*
         version: link:../../packages/validators
@@ -423,6 +429,8 @@ importers:
       vite:
         specifier: ^8.3.6
         version: 8.3.8(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)
+
+  packages/domain: {}
 
   packages/shared: {}
 
