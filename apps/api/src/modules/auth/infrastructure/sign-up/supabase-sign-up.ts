@@ -8,7 +8,7 @@ import { AppError } from "@core/errors/app-error.js";
 import type { ISignUp } from "@modules/auth/domain/Isign-up.js";
 
 @injectable()
-export class SignUp implements ISignUp {
+export class SupabaseSignUp implements ISignUp {
   constructor() {}
 
   public async execute(dto: SignUpDto): Promise<User> {
