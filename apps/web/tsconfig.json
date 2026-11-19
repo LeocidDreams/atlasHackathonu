@@ -8,6 +8,7 @@
       "@features/*": ["./src/features/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@lib/*": ["./src/lib/*"],
+      "@layouts/*": ["./src/layouts/*"],
       "@provider/*": ["./src/provider/*"]
     }
   },
