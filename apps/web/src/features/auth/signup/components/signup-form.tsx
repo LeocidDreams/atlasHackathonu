@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { createSignUpSchema } from "@atlas/validators";
 import { Button } from "@/components/ui/button";
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -9,13 +11,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { PasswordInput } from "@/features/auth/components/password-input";
-import { PasswordRequirements } from "@/features/auth/components/password-requirements";
-import { isStrongPassword } from "@/features/auth/lib/password-rules";
 
 export type SignUpValues = {
   email: string;
   password: string;
 };
+
+type SignUpErrors = Partial<Record<keyof SignUpValues, { message?: string }[]>>;
+
+const signUpSchema = createSignUpSchema();
 
 type SignUpFormProps = {
   onSubmit?: (values: SignUpValues) => Promise<void> | void;
@@ -25,22 +29,36 @@ export function SignUpForm({ onSubmit }: SignUpFormProps) {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<SignUpErrors>({});
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const weakPassword = submitted && !isStrongPassword(password);
-  const mismatch = (submitted || confirm.length > 0) && confirm !== password;
+  const mismatch = submitted && confirm.length > 0 && confirm !== password;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitted(true);
-    if (!isStrongPassword(password) || confirm !== password) return;
 
     const data = new FormData(event.currentTarget);
-    const values: SignUpValues = {
+    const result = signUpSchema.safeParse({
       email: String(data.get("email") ?? "").trim(),
       password,
-    };
+    });
+
+    if (!result.success) {
+      const errors: SignUpErrors = {};
+      for (const issue of result.error.issues) {
+        const key = issue.path[0] as keyof SignUpValues;
+        (errors[key] ??= []).push({ message: issue.message });
+      }
+      setFieldErrors(errors);
+      return;
+    }
+
+    setFieldErrors({});
+    if (confirm !== password) return;
+
+    const values: SignUpValues = result.data;
 
     setError(null);
     setPending(true);
@@ -58,7 +76,7 @@ export function SignUpForm({ onSubmit }: SignUpFormProps) {
   return (
     <form onSubmit={handleSubmit}>
       <FieldGroup>
-        <Field>
+        <Field data-invalid={!!fieldErrors.email || undefined}>
           <FieldLabel htmlFor="signup-email">Email</FieldLabel>
           <Input
             id="signup-email"
@@ -68,10 +86,12 @@ export function SignUpForm({ onSubmit }: SignUpFormProps) {
             placeholder="you@company.com"
             required
             autoFocus
+            aria-invalid={!!fieldErrors.email || undefined}
           />
+          <FieldError errors={fieldErrors.email} />
         </Field>
 
-        <Field data-invalid={weakPassword || undefined}>
+        <Field data-invalid={!!fieldErrors.password || undefined}>
           <FieldLabel htmlFor="signup-password">Password</FieldLabel>
           <PasswordInput
             id="signup-password"
@@ -81,10 +101,14 @@ export function SignUpForm({ onSubmit }: SignUpFormProps) {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            aria-invalid={weakPassword || undefined}
-            aria-describedby="signup-password-rules"
+            aria-invalid={!!fieldErrors.password || undefined}
+            aria-describedby="signup-password-hint"
           />
-          <PasswordRequirements id="signup-password-rules" value={password} />
+          <FieldDescription id="signup-password-hint">
+            At least 8 characters with an uppercase letter, a lowercase letter,
+            a number and one of ! @ # $ &amp; *.
+          </FieldDescription>
+          <FieldError errors={fieldErrors.password} />
         </Field>
 
         <Field data-invalid={mismatch || undefined}>
