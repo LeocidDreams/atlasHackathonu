@@ -22,10 +22,6 @@ export async function createApp(): Promise<Express> {
   // process-level error handling setup
   setupGlobalErrorHandlers();
 
-  // Initialize DB
-  // await connectDb();
-  // console.log(`Database connection state: ${mongoose.connection.readyState}`);
-
   const app = express();
 
   app.set("trust proxy", true);
@@ -40,7 +36,6 @@ export async function createApp(): Promise<Express> {
   app.use(attachRequestLogger);
 
   app.use(cookieParser());
-  // app.use(firebaseAuthenticationMiddleware());
 
   // Security Filter Chain
   const securityFilterChain = new HttpSecurityBuilder()
@@ -56,8 +51,8 @@ export async function createApp(): Promise<Express> {
       }
 
       // production routes
-      auth.requestMatchers("/api/auth").permitAll();
-      auth.requestMatchers("/api/risk").authenticated();
+      auth.requestMatchers("/api/rag/*").permitAll();
+      auth.requestMatchers("/api/upload/*").permitAll();
     })
     .build();
 
@@ -87,9 +82,13 @@ export async function createApp(): Promise<Express> {
   }
 
   // // User Routes
-  // const { authRouter } =
-  //   await import("@modules/auth/infrastructure/http/auth.route.js");
-  // app.use("/api/auth", authRouter);
+  const { ragRouter } =
+    await import("@modules/rag/infrastructure/http/rag.route.js");
+  app.use("/api/rag", ragRouter);
+
+  const { uploadRouter } =
+    await import("@modules/upload/infrastructure/http/upload.route.js");
+  app.use("/api/upload", uploadRouter);
 
   app.use(errorMiddleware);
 
@@ -117,7 +116,8 @@ export async function startHttp(port: number) {
     process.exit(1);
   }
 
-  // Initialize DB for logging purposes if needed (already done in createApp)
+  // Initialize DB
+  import("@core/supabase/supabase.js");
 
   const server = app.listen(port, () => {
     const bootTimeMs = Date.now() - bootStart;
