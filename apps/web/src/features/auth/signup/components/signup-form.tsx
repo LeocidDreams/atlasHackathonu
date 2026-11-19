@@ -21,11 +21,7 @@ type SignUpErrors = Partial<Record<keyof SignUpValues, { message?: string }[]>>;
 
 const signUpSchema = createSignUpSchema();
 
-type SignUpFormProps = {
-  onSubmit?: (values: SignUpValues) => Promise<void> | void;
-};
-
-export function SignUpForm({ onSubmit }: SignUpFormProps) {
+export function SignUpForm() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -63,7 +59,6 @@ export function SignUpForm({ onSubmit }: SignUpFormProps) {
     setError(null);
     setPending(true);
     try {
-      await onSubmit?.(values);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Sign up failed. Try again.",

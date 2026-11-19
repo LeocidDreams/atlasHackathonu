@@ -9,17 +9,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { PasswordInput } from "@/features/auth/components/password-input";
+import { supabase } from "@lib/supabase";
 
 export type SignInValues = {
   email: string;
   password: string;
 };
 
-type SignInFormProps = {
-  onSubmit?: (values: SignInValues) => Promise<void> | void;
-};
-
-export function SignInForm({ onSubmit }: SignInFormProps) {
+export function SignInForm() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,7 +31,15 @@ export function SignInForm({ onSubmit }: SignInFormProps) {
     setError(null);
     setPending(true);
     try {
-      await onSubmit?.(values);
+      const { data: _data, error } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+        setError(error.message);
+        return;
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Sign in failed. Try again.",
