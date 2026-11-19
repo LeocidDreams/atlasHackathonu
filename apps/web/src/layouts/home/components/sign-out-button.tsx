@@ -19,6 +19,7 @@ export function SignOutButton() {
         return;
       }
       navigate("/auth/signin");
+      toast.success("Signed out successfully");
     } finally {
       setPending(false);
     }
