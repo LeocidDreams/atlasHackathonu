@@ -1,29 +1,44 @@
-import os
+import json
 from pathlib import Path
 
-from dotenv import load_dotenv
-from langchain_community.document_loaders import PyPDFLoader
+from chunker import Chunk, generate_chunks
+from load_env import require_env
+from google import genai
+from google.genai import types
 
-# Resolve .env next to this file so the script works from any working directory.
-load_dotenv(Path(__file__).resolve().parent / ".env")
+GEMINI_API_KEY = require_env("GEMINI_API_KEY")
 
+EMBEDDING_MODEL = "gemini-embedding-2"
+# Must match the API (apps/api gemini-embedding-generator.ts) and the vector(N) column.
+EMBEDDING_DIMENSIONS = 1536
 
-def require_env(name: str) -> str:
-    value = os.getenv(name)
-    if not value:
-        raise RuntimeError(f"Missing environment variable: {name} (see .env.example)")
-    return value
-
-
-SUPABASE_URL = require_env("SUPABASE_URL")
-SUPABASE_SECRET_KEY = require_env("SUPABASE_SECRET_KEY")
+# Only metadata that helps retrieval; PDF fields like producer/creationdate/source path are noise.
+EMBEDDED_METADATA_KEYS = ("university", "page_label", "slide", "title", "subject")
 
 
-university_names = ["dokuz-eylul"]
+def to_document_prompt(chunk: Chunk) -> str:
+    # gemini-embedding-2 has no task_type option; the retrieval task goes into the text itself.
+    # Same "title: ... | text: ..." format the API uses, so documents and queries embed consistently.
+    title = chunk.meta_data.get("title") or Path(chunk.rel_path).stem
+    metadata = {
+        key: chunk.meta_data[key] for key in EMBEDDED_METADATA_KEYS if chunk.meta_data.get(key) not in (None, "")
+    }
+    return f"title: {title} | text: {chunk.content}, metadata: {json.dumps(metadata, ensure_ascii=False)}"
 
 
+client = genai.Client(api_key=GEMINI_API_KEY)
+chunks: list[Chunk] = generate_chunks()
 
-print("hello")
+BATCH_SIZE = 100
 
-
-
+def generate_embeddings(chunks: list[Chunk]) -> list[list[float]]:
+    embeddings: list[list[float]] = []
+    for i in range(0, len(chunks), BATCH_SIZE):
+        batch = chunks[i : i + BATCH_SIZE]
+        result = client.models.embed_content(
+            model=EMBEDDING_MODEL,
+            contents=[to_document_prompt(chunk) for chunk in batch],
+            config=types.EmbedContentConfig(output_dimensionality=EMBEDDING_DIMENSIONS),
+        )
+        embeddings.extend(e.values for e in result.embeddings)
+    return embeddings  # embeddings[i] -> chunks[i]
