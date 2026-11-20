@@ -14,11 +14,15 @@ type CampusOpsProviderProps = {
 type CampusOpsProviderState = {
   chatMessages: ChatMessage[];
   setChatMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
+  draft: string;
+  setDraft: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const initialState: CampusOpsProviderState = {
   chatMessages: [],
   setChatMessages: () => {},
+  draft: "",
+  setDraft: () => {},
 };
 
 const CampusOpsProviderContext =
@@ -30,9 +34,13 @@ export function CampusOpsProvider({
 }: CampusOpsProviderProps) {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
 
+  const [draft, setDraft] = useState("");
+
   const value: CampusOpsProviderState = {
     chatMessages,
     setChatMessages,
+    draft,
+    setDraft,
   };
 
   return (

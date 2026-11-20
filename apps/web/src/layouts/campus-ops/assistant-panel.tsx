@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useCampusOps } from "@provider/campusops-provider";
 import { useMutation } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { BotIcon, SendHorizontalIcon } from "lucide-react";
@@ -15,7 +16,6 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import API from "@/lib/axios-wrapper";
-import type { ChatMessage } from "@provider/campusops-provider";
 
 const DEFAULT_UNIVERSITY = "dokuz-eylul";
 const MAX_QUERY_LENGTH = 2000;
@@ -54,19 +54,19 @@ export function AssistantPanel({
   onOpenChange,
   university = DEFAULT_UNIVERSITY,
 }: AssistantPanelProps) {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [draft, setDraft] = useState("");
+  const { chatMessages, setChatMessages, draft, setDraft } = useCampusOps();
+
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const ask = useMutation({
     mutationFn: askCampusOps,
     onSuccess: (answer) =>
-      setMessages((prev) => [
+      setChatMessages((prev) => [
         ...prev,
         { id: crypto.randomUUID(), role: "assistant", content: answer },
       ]),
     onError: (err) =>
-      setMessages((prev) => [
+      setChatMessages((prev) => [
         ...prev,
         { id: crypto.randomUUID(), role: "error", content: errorMessage(err) },
       ]),
@@ -77,13 +77,13 @@ export function AssistantPanel({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [messages, ask.isPending]);
+  }, [chatMessages, ask.isPending]);
 
   function send() {
     const query = draft.trim();
     if (!query || ask.isPending) return;
 
-    setMessages((prev) => [
+    setChatMessages((prev) => [
       ...prev,
       { id: crypto.randomUUID(), role: "user", content: query },
     ]);
@@ -125,13 +125,13 @@ export function AssistantPanel({
           className="flex flex-1 flex-col gap-3 overflow-y-auto p-4"
           aria-live="polite"
         >
-          {messages.length === 0 && (
+          {chatMessages.length === 0 && (
             <p className="m-auto max-w-64 text-center text-muted-foreground">
               Ask a question to get an answer from your university's documents.
             </p>
           )}
 
-          {messages.map((message) => (
+          {chatMessages.map((message) => (
             <div
               key={message.id}
               className={cn(
