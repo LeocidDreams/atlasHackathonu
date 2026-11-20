@@ -1,6 +1,8 @@
 import { createContext, useContext } from "react";
-import { ThemeProvider } from "./theme-provider";
-import { AuthProvider } from "./auth-provider";
+import { ThemeProvider } from "@provider/theme-provider";
+import { AuthProvider } from "@provider/auth-provider";
+import { QueryClientProvider } from "@tanstack/react-query";
+import queryClient from "@lib/query-client";
 
 type BaseProviderProps = {
   children: React.ReactNode;
@@ -17,11 +19,13 @@ export function BaseProvider({ children, ...props }: BaseProviderProps) {
 
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <BaseProviderContext.Provider {...props} value={value}>
-          {children}
-        </BaseProviderContext.Provider>
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <BaseProviderContext.Provider {...props} value={value}>
+            {children}
+          </BaseProviderContext.Provider>
+        </AuthProvider>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }
