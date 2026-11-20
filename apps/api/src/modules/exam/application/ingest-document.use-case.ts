@@ -1,6 +1,8 @@
-import { type IChunkDocument } from "@modules/rag/domain/Ichunk-document.js";
-import { type IEmbeddingGenerator } from "@modules/rag/domain/Iembedding-generator.js";
-import { type EmbeddedChunk } from "@modules/rag/domain/chunk.js";
+import type {
+  IChunkDocument,
+  IEmbeddingGenerator,
+  EmbeddedChunk,
+} from "@atlas/rag";
 
 /**
  * Turns an uploaded file into embedded chunks: parse -> chunk -> embed.

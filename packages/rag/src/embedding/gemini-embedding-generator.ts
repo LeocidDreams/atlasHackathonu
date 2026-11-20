@@ -1,7 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
-import { type IEmbeddingGenerator } from "@modules/rag/domain/Iembedding-generator.js";
-import { AppError } from "@core/errors/app-error.js";
-import type { Chunk } from "@modules/rag/domain/chunk.js";
+import { type IEmbeddingGenerator } from "../types.js";
+import { type Chunk, RagError } from "../types.js";
 
 const EMBEDDING_MODEL = "gemini-embedding-2";
 // Must match the vector(N) column; pgvector's HNSW index supports at most 2000 dimensions.
@@ -69,7 +68,8 @@ export class GeminiEmbeddingGenerator implements IEmbeddingGenerator {
       embeddings.length !== texts.length ||
       embeddings.some((values) => values.length !== EMBEDDING_DIMENSIONS)
     ) {
-      throw AppError.internal(
+      throw new RagError(
+        "EMBEDDING_MISMATCH",
         `Embedding response mismatch: expected ${texts.length} vectors of ${EMBEDDING_DIMENSIONS} dimensions`,
       );
     }

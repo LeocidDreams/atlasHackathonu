@@ -1,12 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
-import { type Chunk } from "@modules/rag/domain/chunk.js";
+import { type Chunk } from "@atlas/rag";
 import {
   type Exam,
   type ExaminationOptions,
   type SourceReference,
-} from "@modules/rag/domain/exam.js";
-import { type IExamGenerator } from "@modules/rag/domain/Iexam-generator.js";
+} from "@modules/exam/domain/exam.js";
+import { type IExamGenerator } from "@modules/exam/domain/Iexam-generator.js";
 import { AppError } from "@core/errors/app-error.js";
 
 const EXAM_MODEL = "gemini-3.8-flash";

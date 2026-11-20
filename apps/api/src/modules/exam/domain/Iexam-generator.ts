@@ -1,5 +1,8 @@
-import { type Chunk } from "@modules/rag/domain/chunk.js";
-import { type Exam, type ExaminationOptions } from "@modules/rag/domain/exam.js";
+import { type Chunk } from "@atlas/rag";
+import {
+  type Exam,
+  type ExaminationOptions,
+} from "@modules/exam/domain/exam.js";
 
 export interface IExamGenerator {
   /**

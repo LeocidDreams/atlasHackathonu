@@ -1,4 +1,4 @@
-import { LangchainChunker } from "@modules/rag/infrastructure/chunking/langchain-chunker.js";
+import { LangchainChunker } from "../src/chunking/langchain-chunker";
 import { describe, it, expect } from "vitest";
 describe("LangchainChunker", () => {
   it("should generate chunks from text", async () => {
@@ -10,10 +10,14 @@ describe("LangchainChunker", () => {
   });
 
   it("should generate chunks from documents and keep metadata", async () => {
-    const chunkDocument = new LangchainChunker({ chunkSize: 30, chunkOverlap: 0 });
+    const chunkDocument = new LangchainChunker({
+      chunkSize: 30,
+      chunkOverlap: 0,
+    });
     const documents = [
       {
-        content: "First paragraph of the file.\n\nSecond paragraph of the file.",
+        content:
+          "First paragraph of the file.\n\nSecond paragraph of the file.",
         metadata: { source: "a.txt" },
       },
       { content: "   ", metadata: { source: "empty.txt" } },
@@ -37,6 +41,8 @@ describe("LangchainChunker", () => {
   it("should reject unsupported file types", async () => {
     const chunkDocument = new LangchainChunker();
     const file = new File(["a,b"], "sheet.xlsx");
-    await expect(chunkDocument.generateChunksFromFile(file)).rejects.toThrow(/Unsupported file type/);
+    await expect(chunkDocument.generateChunksFromFile(file)).rejects.toThrow(
+      /Unsupported file type/,
+    );
   });
 });

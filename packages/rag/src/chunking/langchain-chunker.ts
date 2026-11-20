@@ -7,9 +7,8 @@ import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { DocxLoader } from "@langchain/community/document_loaders/fs/docx";
 import { readFile } from "node:fs/promises";
 import { basename, extname } from "node:path";
-import { type IChunkDocument } from "@modules/rag/domain/Ichunk-document.js";
-import { type Chunk } from "@modules/rag/domain/chunk.js";
-import { AppError } from "@core/errors/app-error.js";
+import { type IChunkDocument, RagError } from "../types.js";
+import { type Chunk } from "../types.js";
 
 const TEXT_EXTENSIONS = new Set([".txt", ".md"]);
 export const SUPPORTED_FILE_EXTENSIONS = [".pdf", ".docx", ...TEXT_EXTENSIONS];
@@ -45,7 +44,9 @@ export class LangchainChunker implements IChunkDocument {
     return chunks.map((chunk) => chunk.trim()).filter(Boolean);
   }
 
-  public async generateChunksFromDocuments(documents: Chunk[]): Promise<Chunk[]> {
+  public async generateChunksFromDocuments(
+    documents: Chunk[],
+  ): Promise<Chunk[]> {
     const nonEmpty = documents.filter((doc) => doc.content.trim());
     if (nonEmpty.length === 0) {
       return [];
@@ -53,10 +54,16 @@ export class LangchainChunker implements IChunkDocument {
 
     // splitDocuments copies each source's metadata (plus loc line ranges) onto its chunks.
     const chunks = await this.splitter.splitDocuments(
-      nonEmpty.map((doc) => new Document({ pageContent: doc.content, metadata: doc.metadata })),
+      nonEmpty.map(
+        (doc) =>
+          new Document({ pageContent: doc.content, metadata: doc.metadata }),
+      ),
     );
     return chunks
-      .map((chunk) => ({ content: chunk.pageContent.trim(), metadata: chunk.metadata }))
+      .map((chunk) => ({
+        content: chunk.pageContent.trim(),
+        metadata: chunk.metadata,
+      }))
       .filter((chunk) => chunk.content);
   }
 
@@ -80,10 +87,14 @@ export class LangchainChunker implements IChunkDocument {
     } else if (extension === ".docx") {
       documents = await new DocxLoader(file).load();
     } else if (TEXT_EXTENSIONS.has(extension)) {
-      const text = typeof file === "string" ? await readFile(file, "utf-8") : await file.text();
+      const text =
+        typeof file === "string"
+          ? await readFile(file, "utf-8")
+          : await file.text();
       documents = [new Document({ pageContent: text, metadata: {} })];
     } else {
-      throw AppError.badRequest(
+      throw new RagError(
+        "UNSUPPORTED_FILE_TYPE",
         `Unsupported file type "${extension || fileName}". Supported: ${SUPPORTED_FILE_EXTENSIONS.join(", ")}`,
       );
     }

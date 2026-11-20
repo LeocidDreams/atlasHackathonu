@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@atlas/domain": "workspace:*",
+    "@atlas/rag": "workspace:*",
     "@atlas/shared": "workspace:*",
     "@atlas/validators": "workspace:*",
     "@google/genai": "^3.4.0",
