@@ -1,9 +1,8 @@
 import dotenv from "dotenv";
-import { IngestDocumentUseCase } from "@modules/rag/application/ingest-document.use-case.js";
-import { GeminiEmbeddingGenerator } from "@modules/rag/infrastructure/embedding/gemini-embedding-generator.js";
+import { IngestDocumentUseCase } from "@modules/exam/application/ingest-document.use-case.js";
+import { GeminiEmbeddingGenerator, LangchainChunker } from "@atlas/rag";
 import path from "node:path";
-import { LangchainChunker } from "@modules/rag/infrastructure/chunking/langchain-chunker.js";
-import { GeminiExamGenerator } from "@modules/rag/infrastructure/exam/gemini-exam-generator.js";
+import { GeminiExamGenerator } from "@modules/exam/infrastructure/exam/gemini-exam-generator.js";
 import fs from "fs";
 
 // apps/api/.env; same depth from src/ and dist/. Runs before any class reads process.env.
