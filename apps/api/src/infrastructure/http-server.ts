@@ -95,6 +95,10 @@ export async function createApp(): Promise<Express> {
     await import("@modules/auth/infrastructure/http/auth.route.js");
   app.use("/api/auth", authRouter);
 
+  const { campusOpsRouter } =
+    await import("@modules/campusops/infrastructure/http/campusops.route.js");
+  app.use("/api/campusops", campusOpsRouter);
+
   app.use(errorMiddleware);
 
   return app;

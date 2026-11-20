@@ -4,6 +4,9 @@ export const TOKENS = {
   // rag-exam
   ExamGenerator: Symbol.for("ExamGenerator"),
 
+  // campusops
+  SearchCampusInfo: Symbol.for("SearchCampusInfo"),
+
   // auth
   SignUp: Symbol.for("SignUp"),
 };
