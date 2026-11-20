@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
