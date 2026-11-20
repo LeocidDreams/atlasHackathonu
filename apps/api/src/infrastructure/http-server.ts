@@ -51,8 +51,9 @@ export async function createApp(): Promise<Express> {
       }
 
       // production routes
-      auth.requestMatchers("/api/rag/*").permitAll();
+      auth.requestMatchers("/api/exam/*").permitAll();
       auth.requestMatchers("/api/upload/*").permitAll();
+      auth.requestMatchers("/api/auth/*").permitAll();
     })
     .build();
 
@@ -82,13 +83,21 @@ export async function createApp(): Promise<Express> {
   }
 
   // // User Routes
-  const { ragRouter } =
-    await import("@modules/rag/infrastructure/http/rag.route.js");
-  app.use("/api/rag", ragRouter);
+  const { examRouter } =
+    await import("@modules/exam/infrastructure/http/exam.route.js");
+  app.use("/api/exam", examRouter);
 
   const { uploadRouter } =
     await import("@modules/upload/infrastructure/http/upload.route.js");
   app.use("/api/upload", uploadRouter);
+
+  const { authRouter } =
+    await import("@modules/auth/infrastructure/http/auth.route.js");
+  app.use("/api/auth", authRouter);
+
+  const { campusOpsRouter } =
+    await import("@modules/campusops/infrastructure/http/campusops.route.js");
+  app.use("/api/campusops", campusOpsRouter);
 
   app.use(errorMiddleware);
 

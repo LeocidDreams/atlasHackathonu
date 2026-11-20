@@ -10,10 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@atlas/domain": "workspace:*",
+    "@atlas/validators": "workspace:*",
     "@base-ui/react": "^1.9.0",
     "@fontsource-variable/geist": "^5.3.0",
     "@shadcn/react": "^0.3.1",
+    "@supabase/supabase-js": "^2.119.0",
     "@tailwindcss/vite": "^4.3.5",
+    "@tanstack/react-query": "^5.108.0",
+    "axios": "^1.21.1",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.1.1",
     "cn": "^0.5.2",
@@ -27,6 +32,7 @@
     "react-day-picker": "^10.0.2",
     "react-dom": "^19.3.1",
     "react-resizable-panels": "^4.24.0",
+    "react-router": "^8.5.2",
     "recharts": "3.8.0",
     "shadcn": "^4.23.0",
     "shiki": "^4.6.0",
@@ -37,6 +43,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@tanstack/react-query-devtools": "^5.108.0",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
