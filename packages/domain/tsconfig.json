@@ -9,5 +9,5 @@
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
-  "include": ["src", "../rag/src/chunking", "../rag/src/embedding"]
+  "include": ["src"]
 }
