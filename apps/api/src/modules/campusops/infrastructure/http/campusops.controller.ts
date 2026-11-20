@@ -23,7 +23,7 @@ export class CampusOpsController {
     const answer = await geminiAssistant.answer({
       university,
       query,
-      matchCount: 5,
+      matchCount: 15,
       embeddingGenerator,
     });
 
