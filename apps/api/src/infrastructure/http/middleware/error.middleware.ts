@@ -22,6 +22,14 @@ export function errorMiddleware(
         }),
       );
     } else {
+      req.logger.error(`${err.message}`, {
+        context: "ExpressError",
+        method: req.method,
+        path: req.originalUrl,
+        error: err.message,
+        stack: err.stack,
+      });
+
       res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(
         ApiResponse.from({
           httpStatusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
@@ -37,7 +45,7 @@ export function errorMiddleware(
       ? err
       : new Error(typeof err === "string" ? err : "Unknown error");
 
-  req.logger.error("Unhandled application error", {
+  req.logger.error(`${error.message}`, {
     context: "ExpressError",
     method: req.method,
     path: req.originalUrl,

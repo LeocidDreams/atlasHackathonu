@@ -2,14 +2,16 @@ import { ApiResponse, HttpStatusCode } from "@atlas/shared";
 import type { Request, Response, NextFunction } from "express";
 import { ZodType, ZodError } from "zod";
 
-export const validateRequest = (createSchema: () => ZodType) => {
+export const validateRequest = (
+  createSchema: (req: Request, res: Response) => ZodType,
+) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const schema = createSchema();
+      const schema = createSchema(req, res);
       await schema.parseAsync({
-        body: req.body,
-        query: req.query,
-        params: req.params,
+        ...{ body: req.body ?? {} },
+        ...{ query: req.query ?? {} },
+        ...{ headers: req.headers ?? {} },
       });
       return next();
     } catch (error) {
