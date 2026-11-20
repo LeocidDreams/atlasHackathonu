@@ -3,4 +3,5 @@ packages:
   - packages/*
 allowBuilds:
   '@scarf/scarf': true
+  esbuild: set this to true or false
   protobufjs: true
