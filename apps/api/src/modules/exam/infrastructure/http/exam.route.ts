@@ -1,20 +1,20 @@
 import { Router } from "express";
-import { RagController } from "@modules/rag/infrastructure/http/rag.controller.js";
+import { ExamController } from "@modules/exam/infrastructure/http/exam.controller.js";
 import { asyncWrapper } from "@infrastructure/util/async-wrapper.js";
 
-const ragRouter: Router = Router();
+const examRouter: Router = Router();
 
 /**
  * @openapi
- * /api/rag/generate-exam:
+ * /api/exam/generate-exam:
  *   post:
- *     tags: [RAG]
- *     summary: Generate an exam using the RAG knowledge base
+ *     tags: [Exam]
+ *     summary: Generate an exam using the Exam knowledge base
  *     requestBody:
  *       required: false
  *     responses:
  *       200:
- *         description: Document uploaded successfully
+ *         description: Exam generated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -22,7 +22,7 @@ const ragRouter: Router = Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: rag upload endpoint
+ *                   example: exam generated successfully
  *                 httpStatusCode:
  *                   type: integer
  *                   example: 200
@@ -53,6 +53,6 @@ const ragRouter: Router = Router();
  *                     type: string
  *                   example: []
  */
-ragRouter.post("/generate-exam", asyncWrapper(RagController.upload));
+examRouter.post("/generate-exam", asyncWrapper(ExamController.generateExam));
 
-export { ragRouter };
+export { examRouter };
