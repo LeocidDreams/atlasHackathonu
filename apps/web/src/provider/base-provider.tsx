@@ -3,6 +3,7 @@ import { ThemeProvider } from "@provider/theme-provider";
 import { AuthProvider } from "@provider/auth-provider";
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "@lib/query-client";
+import { CampusOpsProvider } from "@provider/campusops-provider";
 
 type BaseProviderProps = {
   children: React.ReactNode;
@@ -21,9 +22,11 @@ export function BaseProvider({ children, ...props }: BaseProviderProps) {
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <BaseProviderContext.Provider {...props} value={value}>
-            {children}
-          </BaseProviderContext.Provider>
+          <CampusOpsProvider>
+            <BaseProviderContext.Provider {...props} value={value}>
+              {children}
+            </BaseProviderContext.Provider>
+          </CampusOpsProvider>
         </AuthProvider>
       </QueryClientProvider>
     </ThemeProvider>

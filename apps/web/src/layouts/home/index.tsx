@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import { Footer } from "@layouts/home/components/footer";
 import { Header } from "@layouts/home/components/header";
-import { CampusOpsLayout } from "../campus-ops";
+import { CampusOpsLayout } from "@layouts/campus-ops";
 
 export default function HomeLayout() {
   return (

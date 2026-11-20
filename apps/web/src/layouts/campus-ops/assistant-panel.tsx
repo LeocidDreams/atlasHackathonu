@@ -15,15 +15,10 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import API from "@/lib/axios-wrapper";
+import type { ChatMessage } from "@provider/campusops-provider";
 
 const DEFAULT_UNIVERSITY = "dokuz-eylul";
 const MAX_QUERY_LENGTH = 2000;
-
-type ChatMessage = {
-  id: string;
-  role: "user" | "assistant" | "error";
-  content: string;
-};
 
 type AskResponse = {
   message: string;
@@ -44,6 +39,8 @@ async function askCampusOps(body: AskQueryDto): Promise<string> {
 }
 
 function errorMessage(err: unknown): string {
+  console.log(err);
+
   if (isAxiosError<AskResponse>(err)) {
     const issues = err.response?.data?.issues;
     if (issues?.length) return issues.join(" ");
@@ -100,7 +97,11 @@ export function AssistantPanel({
   }
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey &&
+      !event.nativeEvent.isComposing
+    ) {
       event.preventDefault();
       send();
     }
@@ -154,7 +155,10 @@ export function AssistantPanel({
           )}
         </div>
 
-        <form onSubmit={handleSubmit} className="flex items-end gap-2 border-t p-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex items-end gap-2 border-t p-4"
+        >
           <Textarea
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
