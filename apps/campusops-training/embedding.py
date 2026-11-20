@@ -1,10 +1,11 @@
 import json
 from pathlib import Path
-
-from chunker import Chunk, generate_chunks
 from load_env import require_env
 from google import genai
 from google.genai import types
+from dataclasses import dataclass
+from chunker import Chunk
+
 
 GEMINI_API_KEY = require_env("GEMINI_API_KEY")
 
@@ -27,9 +28,13 @@ def to_document_prompt(chunk: Chunk) -> str:
 
 
 client = genai.Client(api_key=GEMINI_API_KEY)
-chunks: list[Chunk] = generate_chunks()
-
 BATCH_SIZE = 100
+
+
+@dataclass
+class Embedding:
+    chunk: Chunk
+    vector: list[float]
 
 def generate_embeddings(chunks: list[Chunk]) -> list[list[float]]:
     embeddings: list[list[float]] = []
@@ -37,7 +42,8 @@ def generate_embeddings(chunks: list[Chunk]) -> list[list[float]]:
         batch = chunks[i : i + BATCH_SIZE]
         result = client.models.embed_content(
             model=EMBEDDING_MODEL,
-            contents=[to_document_prompt(chunk) for chunk in batch],
+            # One Content per chunk; a plain list[str] becomes parts of a single Content and yields ONE merged embedding.
+            contents=[types.Content(parts=[types.Part(text=to_document_prompt(chunk))]) for chunk in batch],
             config=types.EmbedContentConfig(output_dimensionality=EMBEDDING_DIMENSIONS),
         )
         embeddings.extend(e.values for e in result.embeddings)
