@@ -1,3 +1,4 @@
 {
-  "debug.javascript.autoAttachFilter": "disabled"
+  "debug.javascript.autoAttachFilter": "disabled",
+  "python.defaultInterpreterPath": "${workspaceFolder}/apps/campusops-training/.venv/Scripts/python.exe"
 }
