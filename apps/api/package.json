@@ -48,6 +48,7 @@
     "supabase": "^3.2.0",
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",
+    "tsx": "^4.23.15",
     "tsyringe": "^4.10.0",
     "zod": "^4.6.7"
   },
