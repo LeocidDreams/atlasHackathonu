@@ -1,0 +1,12 @@
+[project]
+name = "campusops-training"
+version = "0.1.0"
+description = "Load PDFs, split them into chunks, embed them with OpenAI and store them in Qdrant."
+requires-python = ">=3.12"
+dependencies = [
+    "langchain>=1.5.2",
+    "python-dotenv>=1.2.4",
+]
+
+[tool.uv]
+package = false
