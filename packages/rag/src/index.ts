@@ -1,3 +1,3 @@
-export * from "./types.js";
-export * from "./chunking/langchain-chunker.js";
-export * from "./embedding/gemini-embedding-generator.js";
+export * from "@rag/types.js";
+export * from "@rag/chunking/langchain-chunker.js";
+export * from "@rag/embedding/gemini-embedding-generator.js";

@@ -7,8 +7,7 @@ import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { DocxLoader } from "@langchain/community/document_loaders/fs/docx";
 import { readFile } from "node:fs/promises";
 import { basename, extname } from "node:path";
-import { type IChunkDocument, RagError } from "../types.js";
-import { type Chunk } from "../types.js";
+import { type IChunkDocument, RagError, type Chunk } from "@rag/types.js";
 
 const TEXT_EXTENSIONS = new Set([".txt", ".md"]);
 export const SUPPORTED_FILE_EXTENSIONS = [".pdf", ".docx", ...TEXT_EXTENSIONS];

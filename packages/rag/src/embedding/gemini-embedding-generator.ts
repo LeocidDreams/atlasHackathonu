@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
-import { type IEmbeddingGenerator } from "../types.js";
-import { type Chunk, RagError } from "../types.js";
+import { type IEmbeddingGenerator } from "@rag/types.js";
+import { type Chunk, RagError } from "@rag/types.js";
 
 const EMBEDDING_MODEL = "gemini-embedding-2";
 // Must match the vector(N) column; pgvector's HNSW index supports at most 2000 dimensions.

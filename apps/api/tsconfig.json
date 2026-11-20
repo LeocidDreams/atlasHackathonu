@@ -20,6 +20,7 @@
   "references": [
     { "path": "../../packages/shared" },
     { "path": "../../packages/domain" },
-    { "path": "../../packages/validators" }
+    { "path": "../../packages/validators" },
+    { "path": "../../packages/rag" }
   ]
 }
