@@ -54,27 +54,31 @@ def extreact_document(path: str) -> list[documents.Document]:
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+
+
 @dataclass
 class Chunk:
     abs_path: str
     rel_path: str
+    # Position within its file; with rel_path it is the row's unique key in campusops_embeddings.
+    chunk_index: int
     content: str
     meta_data: dict[str, str]
 
 def generate_chunks(university_name: str, document_paths: list[str]) -> list[Chunk]:
     chunks_list: list[Chunk] = []
     for path in document_paths:
-        docs = extreact_document(path)
-        for doc in docs:
-            splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-            chunks = splitter.split_text(doc.page_content)
-            for chunk in chunks:
-                chunk_obj = Chunk(
+        chunk_index = 0
+        for doc in extreact_document(path):
+            for chunk in splitter.split_text(doc.page_content):
+                chunks_list.append(Chunk(
                     abs_path=path,
                     rel_path=os.path.relpath(path, DATA_DIR),
+                    chunk_index=chunk_index,
                     content=chunk,
                     meta_data={**doc.metadata, "university": university_name}
-                )
-                chunks_list.append(chunk_obj)
+                ))
+                chunk_index += 1
     return chunks_list
 
