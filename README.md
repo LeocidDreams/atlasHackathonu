@@ -1,9 +1,14 @@
 ## Project Scopes
 
-| Scope    | Description                                           |
-| -------- | ----------------------------------------------------- |
-| apps/api | Root API gateway for the project                      |
-| apps/web | React web application for the frontend of the project |
+| Scope                   | Description                                                 |
+| ----------------------- | ----------------------------------------------------------- |
+| apps/api                | Root API gateway for the project                            |
+| apps/web                | React web application for the frontend of the project       |
+| apps/campusops-training | Embedding generation and storage for campus ops data        |
+| packages/domain         | Shared domain models used across the project                |
+| packages/shared         | Common utilities and helpers shared between the apps        |
+| packages/validators     | Shared validation schemas for the backend and the frontend  |
+| packages/rag            | Retrieval-augmented generation (RAG) logic for the project  |
 
 ## Commit message convention
 
