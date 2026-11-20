@@ -6,6 +6,7 @@ from load_env import require_env
 from chunker import DATA_DIR, SUPPORTED_EXTENSIONS, generate_chunks
 from embedding import Embedding, generate_embeddings
 from supabase import create_client, Client
+from sd import university_names
 
 SUPABASE_URL = require_env("SUPABASE_URL")
 SUPABASE_SECRET_KEY = require_env("SUPABASE_SECRET_KEY")
@@ -16,7 +17,7 @@ FILE_BATCH_SIZE = 20
 # Rows per Supabase request; keeps each request body a few MB at most.
 SAVE_BATCH_SIZE = 100
 
-university_names = ["dokuz-eylul"]
+
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_SECRET_KEY)
 
